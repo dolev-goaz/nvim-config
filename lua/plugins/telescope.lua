@@ -17,7 +17,6 @@ return {
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 
     -- Diagnostics
-    builtin.diagnostics()
     vim.keymap.set("n", "<leader>td", builtin.diagnostics, { desc = "Telescope: All diagnostics" })
     vim.diagnostic.config({ virtual_text = true })
   end
