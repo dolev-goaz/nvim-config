@@ -23,9 +23,25 @@ vim.opt.updatetime = 750
 
 vim.opt.colorcolumn = "100"
 
+---- terminal ----
+-- exit terminal mode
+vim.keymap.set("t", "<Esc>", "<C-\\><C-N>")
+
+-- tab between terminals
+vim.keymap.set({ "t", "i" }, "<A-h>", "<C-\\><C-N><C-w>h")
+vim.keymap.set({ "t", "i" }, "<A-j>", "<C-\\><C-N><C-w>j")
+vim.keymap.set({ "t", "i" }, "<A-k>", "<C-\\><C-N><C-w>k")
+vim.keymap.set({ "t", "i" }, "<A-l>", "<C-\\><C-N><C-w>l")
+vim.keymap.set("n", "<A-h>", "<C-w>h")
+vim.keymap.set("n", "<A-j>", "<C-w>j")
+vim.keymap.set("n", "<A-k>", "<C-w>k")
+vim.keymap.set("n", "<A-l>", "<C-w>l")
+
+
 ---- clipboard ----
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y')
+
 
 ---- language ----
 -- vim.opt.keymap = "hebrew"
