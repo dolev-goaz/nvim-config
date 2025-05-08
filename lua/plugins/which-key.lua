@@ -22,6 +22,9 @@ return {
             { "<leader>og", group = "Open Git" },
             { "<leader>t", group = "Toggle" },
             { "<leader>tg", group = "Toggle Git" },
+            { "<leader>f", group = "Find" },
+            { "<leader>g", group = "Go To" },
+            { "<leader>l", group = "Language" },
         })
     end,
 }
