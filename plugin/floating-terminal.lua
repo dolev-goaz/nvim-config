@@ -91,7 +91,6 @@ local function close_tab()
 		return
 	end
 	local buf_to_close = table.remove(state.floating.tabs, state.floating.current_tab)
-	vim.api.nvim_buf_delete(buf_to_close, { force = true })
 
 	if #state.floating.tabs == 0 then
 		toggle_terminal_open() -- Close the terminal window if no tabs remain
@@ -100,6 +99,7 @@ local function close_tab()
 		vim.api.nvim_win_set_buf(state.floating.win, state.floating.tabs[state.floating.current_tab])
 		update_terminal_title()
 	end
+	vim.api.nvim_buf_delete(buf_to_close, { force = true })
 end
 
 local function new_tab()
