@@ -5,7 +5,7 @@ local function toggle_copilot_chat()
         copilot_chat.close()
     else
         copilot_chat.open({
-            context = { "files" },
+            context = { "buffer" },
         })
     end
     is_copilot_open = not is_copilot_open
