@@ -71,12 +71,15 @@ local function open_terminal()
     end
     update_terminal_title()
     setup_tabline()
+    vim.api.nvim_create_autocmd("WinClosed", {
+        pattern = tostring(created.win),
+        callback = close_tabline
+    })
 end
 
 local function toggle_terminal_open()
     if vim.api.nvim_win_is_valid(state.floating.win) then
         close_terminal()
-        close_tabline()
         return
     end
     open_terminal()
