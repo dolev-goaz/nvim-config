@@ -45,7 +45,7 @@ local function update_terminal_title()
 	vim.api.nvim_win_set_config(state.floating.win, { title = title })
 end
 
-local toggle_terminal = function()
+local function toggle_terminal_open()
 	if vim.api.nvim_win_is_valid(state.floating.win) then
 		vim.api.nvim_win_hide(state.floating.win)
 		return
@@ -94,7 +94,7 @@ local function close_tab()
 	vim.api.nvim_buf_delete(buf_to_close, { force = true })
 
 	if #state.floating.tabs == 0 then
-		toggle_terminal() -- Close the terminal window if no tabs remain
+		toggle_terminal_open() -- Close the terminal window if no tabs remain
 	else
 		state.floating.current_tab = math.min(state.floating.current_tab, #state.floating.tabs)
 		vim.api.nvim_win_set_buf(state.floating.win, state.floating.tabs[state.floating.current_tab])
@@ -103,16 +103,32 @@ local function close_tab()
 end
 
 local function new_tab()
-	local buf = vim.api.nvim_create_buf(false, true) -- Create a new scratch buffer
-	table.insert(state.floating.tabs, buf) -- Add the buffer to the tabs list
-	state.floating.current_tab = #state.floating.tabs -- Set the new tab as the current tab
-	vim.api.nvim_win_set_buf(state.floating.win, buf) -- Display the new buffer in the floating window
-	vim.cmd.terminal() -- Open a terminal in the new buffer
-	update_terminal_title() -- Update the window title
+	local buf = vim.api.nvim_create_buf(false, true)
+	table.insert(state.floating.tabs, buf)
+	state.floating.current_tab = #state.floating.tabs
+	vim.api.nvim_win_set_buf(state.floating.win, buf)
+	vim.cmd.terminal()
+	update_terminal_title()
 end
 
+local function set_terminal_keymaps(enable)
+	if enable then
+		vim.keymap.set({ "n", "t", "i" }, "<C-t><C-a>", new_tab, { desc = "Create new terminal tab" })
+		vim.keymap.set({ "n", "t", "i" }, "<C-t><C-n>", next_tab, { desc = "Next terminal tab" })
+		vim.keymap.set({ "n", "t", "i" }, "<C-t><C-p>", prev_tab, { desc = "Previous terminal tab" })
+		vim.keymap.set({ "n", "t", "i" }, "<C-t><C-w>", close_tab, { desc = "Close current terminal tab" })
+	else
+		vim.keymap.del({ "n", "t", "i" }, "<C-t><C-a>")
+		vim.keymap.del({ "n", "t", "i" }, "<C-t><C-n>")
+		vim.keymap.del({ "n", "t", "i" }, "<C-t><C-p>")
+		vim.keymap.del({ "n", "t", "i" }, "<C-t><C-w>")
+	end
+end
+
+-- Update keymaps when toggling the terminal
+local function toggle_terminal()
+	local was_open = vim.api.nvim_win_is_valid(state.floating.win)
+	toggle_terminal_open()
+	set_terminal_keymaps(not was_open)
+end
 vim.keymap.set({ "n", "t", "i" }, "<C-t><C-t>", toggle_terminal, { desc = "Toggle floating terminal" })
-vim.keymap.set({ "n", "t", "i" }, "<C-t><C-a>", new_tab, { desc = "Create new terminal tab" })
-vim.keymap.set({ "n", "t", "i" }, "<C-t><C-n>", next_tab, { desc = "Next terminal tab" })
-vim.keymap.set({ "n", "t", "i" }, "<C-t><C-p>", prev_tab, { desc = "Previous terminal tab" })
-vim.keymap.set({ "n", "t", "i" }, "<C-t><C-w>", close_tab, { desc = "Close current terminal tab" })
