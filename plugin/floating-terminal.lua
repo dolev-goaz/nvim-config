@@ -1,10 +1,14 @@
 -- TODO: handle commands that close the terminal(like bye)
-
+local render_tabline, setup_tabline, close_tabline
 local state = {
     floating = {
         win = -1,
-        tabs = {}, -- Store buffers for each terminal tab
-        current_tab = 1, -- Track the current active tab
+        tabs = {},        -- Store buffers for each terminal tab
+        current_tab = 1,  -- Track the current active tab
+        tabline = {
+            buf = -1,
+            win = -1,
+        },
     },
 }
 
@@ -66,11 +70,13 @@ local function open_terminal()
         vim.cmd.terminal()
     end
     update_terminal_title()
+    setup_tabline()
 end
 
 local function toggle_terminal_open()
     if vim.api.nvim_win_is_valid(state.floating.win) then
         close_terminal()
+        close_tabline()
         return
     end
     open_terminal()
@@ -84,6 +90,7 @@ local function next_tab()
     state.floating.current_tab = (state.floating.current_tab % #state.floating.tabs) + 1
     vim.api.nvim_win_set_buf(state.floating.win, state.floating.tabs[state.floating.current_tab])
     update_terminal_title()
+    render_tabline()
 end
 
 local function prev_tab()
@@ -93,6 +100,7 @@ local function prev_tab()
     state.floating.current_tab = (state.floating.current_tab - 2) % #state.floating.tabs + 1
     vim.api.nvim_win_set_buf(state.floating.win, state.floating.tabs[state.floating.current_tab])
     update_terminal_title()
+    render_tabline()
 end
 
 local function close_tab()
@@ -107,6 +115,7 @@ local function close_tab()
         state.floating.current_tab = math.min(state.floating.current_tab, #state.floating.tabs)
         vim.api.nvim_win_set_buf(state.floating.win, state.floating.tabs[state.floating.current_tab])
         update_terminal_title()
+        render_tabline()
     end
     vim.api.nvim_buf_delete(buf_to_close, { force = true })
 end
@@ -118,6 +127,53 @@ local function new_tab()
     vim.api.nvim_win_set_buf(state.floating.win, buf)
     vim.cmd.terminal()
     update_terminal_title()
+    render_tabline()
+end
+
+-- tab rendering
+
+function render_tabline()
+    if not vim.api.nvim_win_is_valid(state.floating.tabline.win) then
+        return
+    end
+
+    local tabline = ""
+    for i, _ in ipairs(state.floating.tabs) do
+        if i == state.floating.current_tab then
+            tabline = tabline .. string.format(" [Tab %d] ", i)
+        else
+            tabline = tabline .. string.format("  Tab %d  ", i)
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(state.floating.tabline.buf, 0, -1, false, { tabline })
+end
+
+function close_tabline()
+    if not vim.api.nvim_buf_is_valid(state.floating.tabline.buf) then
+        return
+    end
+    vim.api.nvim_win_close(state.floating.tabline.win, true)
+    vim.api.nvim_buf_delete(state.floating.tabline.buf, { force = true })
+    state.floating.tabline.buf = -1
+    state.floating.tabline.win = -1
+end
+
+function setup_tabline()
+    if not vim.api.nvim_buf_is_valid(state.floating.tabline.buf) then
+        local terminal_win_config = vim.api.nvim_win_get_config(state.floating.win)
+        state.floating.tabline.buf = vim.api.nvim_create_buf(false, true)
+        state.floating.tabline.win = vim.api.nvim_open_win(state.floating.tabline.buf, false, {
+            relative = "editor",
+            width = terminal_win_config.width,
+            height = 1,
+            col = terminal_win_config.col,
+            row = terminal_win_config.row - 1,
+            style = "minimal",
+            focusable = false,
+        })
+    end
+    render_tabline()
 end
 
 ------- Keymaps -------
