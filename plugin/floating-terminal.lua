@@ -1,4 +1,5 @@
 -- TODO: handle commands that close the terminal(like bye)
+-- TODO: continuous border for the entire window with tabline
 local render_tabline, setup_tabline, close_tabline
 local state = {
 	floating = {
