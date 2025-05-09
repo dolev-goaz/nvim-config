@@ -15,6 +15,7 @@ return {
     vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Telescope: Search Git files" })
     vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep files" })
+    vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
 
     -- Diagnostics
     vim.keymap.set("n", "<leader>td", builtin.diagnostics, { desc = "Telescope: All diagnostics" })
