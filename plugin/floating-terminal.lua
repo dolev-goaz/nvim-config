@@ -1,3 +1,5 @@
+-- TODO: handle commands that close the terminal(like bye)
+
 local function create_floating_window(opts)
 	opts = opts or {}
 	local width = opts.width or math.floor(vim.o.columns * 0.8)
@@ -56,7 +58,7 @@ local function toggle_terminal_open()
 	state.floating.win = created.win
 
 	-- Ensure at least one terminal tab exists
-	if #state.floating.tabs == 0 then
+	if not current_buf then
 		table.insert(state.floating.tabs, created.buf)
 		state.floating.current_tab = 1
 	end
