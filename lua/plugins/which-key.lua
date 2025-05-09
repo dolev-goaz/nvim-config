@@ -25,6 +25,7 @@ return {
             { "<leader>f", group = "Find" },
             { "<leader>g", group = "Go To" },
             { "<leader>l", group = "Language" },
+            { "<leader>c", group = "Code" },
         })
     end,
 }
