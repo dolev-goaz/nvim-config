@@ -71,15 +71,26 @@ end
 
 function M.open_terminal()
 	local current_tab = state.floating.tabs[state.floating.current_tab]
-	local current_buf = nil
-	if current_tab then
-		current_buf = current_tab.buf
-	end
+    local current_buf = current_tab and current_tab.buf or nil
+
+    local invalid_tab = current_buf and not vim.api.nvim_buf_is_valid(current_buf)
+
+    if invalid_tab then
+        current_buf = nil
+    end
+
 	local created = M.create_floating_window({ buf = current_buf })
 	state.floating.main.win = created.parent_win
+	state.floating.tabline.buf = created.tabline_buf
+	state.floating.tabline.win = created.tabline_win
+	state.floating.terminal.win = created.term_win
+
+    if invalid_tab then
+        tabs.close_tab()
+    end
 
 	-- Ensure at least one terminal tab exists
-	if not current_buf then
+	if #state.floating.tabs == 0 then
 		state.floating.current_tab = 1
 		table.insert(state.floating.tabs, {
 			buf = created.term_buf,
@@ -90,9 +101,6 @@ function M.open_terminal()
 	if vim.bo[created.term_buf].buftype ~= "terminal" then
 		vim.cmd.terminal()
 	end
-	state.floating.tabline.buf = created.tabline_buf
-	state.floating.tabline.win = created.tabline_win
-	state.floating.terminal.win = created.term_win
 	tabs.update_terminal_title()
 	tabs.render_tabline()
 

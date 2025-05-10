@@ -86,15 +86,15 @@ function M.close_tab()
     end
     local buf_to_close = table.remove(state.floating.tabs, state.floating.current_tab).buf
 
-    if #state.floating.tabs == 0 then
-        vim.api.nvim_win_hide(state.floating.main.win)
-    else
+    if #state.floating.tabs ~= 0 then
         state.floating.current_tab = math.min(state.floating.current_tab, #state.floating.tabs)
         vim.api.nvim_win_set_buf(state.floating.terminal.win, state.floating.tabs[state.floating.current_tab].buf)
         M.update_terminal_title()
         M.render_tabline()
     end
-    vim.api.nvim_buf_delete(buf_to_close, { force = true })
+    if vim.api.nvim_buf_is_valid(buf_to_close) then
+        vim.api.nvim_buf_delete(buf_to_close, { force = true })
+    end
 end
 
 function M.close_tabline()
