@@ -31,7 +31,7 @@ function M.create_floating_window(opts)
 		width = width - 2,
 		height = 1,
 		col = 1,
-		row = 1,
+		row = 0,
 		style = "minimal",
 		focusable = false,
 	})
