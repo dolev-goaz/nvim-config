@@ -1,5 +1,6 @@
 require("set")
 require("clipboard")
+require("floating-terminal")
 
 -- lazy(package manager)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
