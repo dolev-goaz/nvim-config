@@ -139,7 +139,7 @@ local function set_tab_title(tab_index)
     local augroup = vim.api.nvim_create_augroup("FloatingTerminalInput", { clear = true })
     vim.api.nvim_create_autocmd("WinClosed", {
         group = augroup,
-        pattern = tostring(state.floating.win),
+        pattern = tostring(state.floating.main.win),
         callback = function()
             if vim.api.nvim_win_is_valid(state.floating.title_change.win) then
                 vim.api.nvim_win_close(state.floating.title_change.win, true)
