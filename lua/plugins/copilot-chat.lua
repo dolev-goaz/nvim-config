@@ -14,6 +14,7 @@ end
 return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
+        event = "VeryLazy",
         dependencies = {
             { "github/copilot.vim" },
             { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
