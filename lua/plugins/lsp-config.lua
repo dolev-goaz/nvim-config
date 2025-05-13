@@ -50,13 +50,23 @@ return {
 
             -- vue lsp
             lspconfig["volar"].setup({ capabilities = blink_capabilities })
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover"})
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Go To Definition" })
             vim.keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "Go To Declaration" })
             vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, { desc = "Go To Implementation" })
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, { desc = "Go To References" })
 
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+
+            -- save on format
+            -- TODO: add option to enable/disable autoformat
+            local format_augroup = vim.api.nvim_create_augroup("LspFormat", { clear = true })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = format_augroup,
+                callback = function()
+                    vim.lsp.buf.format({ async = false })
+                end,
+            })
         end,
     },
 }
