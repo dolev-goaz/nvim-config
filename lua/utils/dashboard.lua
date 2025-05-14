@@ -113,6 +113,7 @@ function M.get_section_text_height(current_section)
     return #content
 end
 
+local onefetch_cache = nil
 function M.toggle_header()
     local onefetch = require("onefetch")
     local dashboard = require("alpha.themes.dashboard")
@@ -121,9 +122,14 @@ function M.toggle_header()
         return false
     end
 
+    if onefetch_cache then
+        dashboard.section.header.val = onefetch_cache
+        return true
+    end
     local data = onefetch.get()
     if data then
         dashboard.section.header.val = data
+        onefetch_cache = data
         return true
     else
         -- Shouldn't happen
