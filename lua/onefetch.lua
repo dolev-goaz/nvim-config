@@ -33,8 +33,12 @@ local function split(source, sep)
     return result
 end
 
-function M.get_onefetch()
-    if vim.fn.executable("onefetch") == 0 then
+function M.is_available()
+    return vim.fn.executable("onefetch") == 1
+end
+
+function M.get()
+    if not M.is_available() then
         return nil
     end
 

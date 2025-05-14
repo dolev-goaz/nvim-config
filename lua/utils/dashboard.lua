@@ -2,6 +2,8 @@ local M = {}
 
 M.headers = {
     ghost = {
+        [[]],
+        [[]],
         [[                      ██████                     ]],
         [[                  ████▒▒▒▒▒▒████                 ]],
         [[                ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██               ]],
@@ -18,6 +20,7 @@ M.headers = {
         [[          ████  ██▒▒██  ██▒▒▒▒██  ██▒▒██         ]],
         [[          ██      ██      ████      ████         ]],
         [[                                                 ]],
+        [[]],
     },
 }
 
@@ -111,17 +114,21 @@ function M.get_section_text_height(current_section)
 end
 
 function M.toggle_header()
+    local onefetch = require("onefetch")
     local dashboard = require("alpha.themes.dashboard")
-    if dashboard.section.header.val ~= M.headers.ghost then
+    if dashboard.section.header.val ~= M.headers.ghost or not onefetch.is_available() then
         dashboard.section.header.val = M.headers.ghost
-        return
+        return false
     end
 
-    local data = require("onefetch").get_onefetch()
+    local data = onefetch.get()
     if data then
         dashboard.section.header.val = data
+        return true
     else
+        -- Shouldn't happen
         vim.notify("onefetch data not found", vim.log.levels.WARN, { title = "Dashboard" })
+        return false
     end
 end
 

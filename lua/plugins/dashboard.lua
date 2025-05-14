@@ -37,7 +37,7 @@ return {
         dashboard.section.buttons.val = dashboard_utils.buttons
 
         local toggle_header
-        local toggle_button = dashboard_utils.button("g", "󰈸  Toggle Git Header", function()
+        local toggle_button = dashboard_utils.button("g", "  Toggle Git Header", function()
             toggle_header()
         end)
         table.insert(dashboard.section.buttons.val, 7, toggle_button)
@@ -98,8 +98,10 @@ return {
         })
 
         toggle_header = function()
-            dashboard_utils.toggle_header()
+            local onefetch_active = dashboard_utils.toggle_header()
             opts.layout[1].val = get_vertical_align_padding()
+            local icon = onefetch_active and "" or ""
+            toggle_button.val = icon .. " Toggle Git Header "
             require("alpha").redraw()
         end
         -- TODO: allow opening dashboard with a command
