@@ -12,6 +12,58 @@ local function reload_lazy()
     end
 end
 
+local function create_text_section(options)
+    options = options or {}
+    local section = {
+        type = "text",
+        val = options.content,
+        opts = {
+            position = "center",
+            hl = options.hl,
+        },
+    }
+    return section
+end
+
+local function get_greeting()
+    local username = vim.fn.system("whoami"):gsub("%s+", "")
+    return "Hi " .. username .. ", welcome back to Neovim!"
+end
+
+local function get_plugin_stats(options)
+    options = options or {}
+    if options.loading then
+        return " Loading plugins..."
+    end
+    local stats = require("lazy").stats()
+    local total_plugins = stats.count
+    local total_loaded = stats.loaded
+    local total_runtime = math.floor(stats.startuptime * 100 + 0.5) / 100
+
+    return string.format(" Loaded %d/%d plugins in %d ms", total_loaded, total_plugins, total_runtime)
+end
+
+local function add_border(content)
+    if type(content) == "function" then
+        content = content()
+    end
+    if type(content) == "string" then
+        content = { content }
+    end
+    local max_content_line_length = 0
+    for _, line in ipairs(content) do
+        local current_width = vim.fn.strdisplaywidth(line)
+        if current_width > max_content_line_length then
+            max_content_line_length = current_width
+        end
+    end
+    local border = string.rep("─", max_content_line_length)
+
+    table.insert(content, 1, border)
+    table.insert(content, border)
+    return content
+end
+
 return {
     "goolord/alpha-nvim",
     priority = 2000,
@@ -77,41 +129,50 @@ return {
         dashboard.section.footer.val = footer()
         dashboard.section.footer.opts.hl = "DashboardHeader"
 
-        local greeting = function()
-            local username = vim.fn.system("whoami"):gsub("%s+", "")
-            return "Hi " .. username .. ", welcome back to Neovim!"
-        end
+        local greeting_section = create_text_section({ content = get_greeting })
 
-        local greeting_section = {
-            type = "text",
-            val = greeting,
-            opts = {
-                position = "center",
-            },
-        }
+        local plugin_stats_section = create_text_section({
+            content = add_border(get_plugin_stats({ loading = true })),
+            hl = "DashboardHeader",
+        })
 
         local section = {
             header = dashboard.section.header,
             buttons = dashboard.section.buttons,
             greeting = greeting_section,
+            plugins = plugin_stats_section,
             footer = dashboard.section.footer,
         }
 
         reload_lazy()
 
-        local total_content_height = #section.header.val
-            + 2 * #section.buttons.val -- buttons have one-line spacing
-            + 2                        -- greeting + footer
-            + 4                        -- spacing between sections
-        local total_window_height = vim.fn.winheight(0)
-        local vertical_align_padding = math.max(0, math.floor((total_window_height - total_content_height) / 2))
+        local function get_section_text_height(current_section)
+            local content = current_section.val
+            if type(content) == "function" then
+                content = content()
+            end
+            if type(content) == "string" then
+                return 1
+            end
+            return #content
+        end
+        local function get_vertical_align_padding()
+            local total_content_height = get_section_text_height(section.header)
+                + 2 * get_section_text_height(section.buttons) -- buttons have one-line spacing
+                + get_section_text_height(section.greeting)
+                + 2                                            -- greeting + footer
+                + 4                                            -- spacing between sections
+            local total_window_height = vim.fn.winheight(0)
+            return math.floor((total_window_height - total_content_height) / 2)
+        end
 
         local opts = {
             layout = {
-                { type = "padding", val = vertical_align_padding },
+                { type = "padding", val = get_vertical_align_padding() },
                 section.header,
                 { type = "padding", val = 2 },
                 section.buttons,
+                section.plugins,
                 { type = "padding", val = 1 },
                 section.greeting,
                 { type = "padding", val = 1 },
@@ -122,6 +183,13 @@ return {
         dashboard.opts.opts.noautocmd = true
 
         alpha.setup(opts)
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "VeryLazy", -- After lazy finished loading
+            callback = function()
+                section.plugins.val = add_border(get_plugin_stats())
+                pcall(vim.cmd.AlphaRedraw) -- 🔄 refresh dashboard
+            end,
+        })
 
         -- TODO: allow opening dashboard with a command
     end,
