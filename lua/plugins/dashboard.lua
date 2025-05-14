@@ -100,7 +100,7 @@ return {
                 local onefetch_data = onefetch.get_onefetch()
                 if not onefetch_data then
                     -- warn
-                    vim.notify("Onefetch not found\nInstallation: brew install onefetch", vim.log.levels.WARN, {
+                    vim.notify("onefetch not found\nInstallation: brew install onefetch", vim.log.levels.WARN, {
                         title = "Alpha",
                     })
                     return
