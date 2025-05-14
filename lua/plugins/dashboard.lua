@@ -108,12 +108,12 @@ return {
         dashboard.section.header.opts.hl = "DashboardHeader"
 
         dashboard.section.buttons.val = {
-            button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+            button("p", "  Find Project", "<cmd>lua require('telescope').extensions.project.project()<cr>"),
+            button("e", "  New File", ":ene <BAR> startinsert <CR>"),
             button("f", "  Find Files", ":Telescope find_files <CR>"),
-            button("p", "  Find project", "<cmd>lua require('telescope').extensions.project.project()<cr>"),
             button("r", "󰦛  Recent Files", "<cmd>Telescope oldfiles<cr>"),
-            button("t", "  Find text", ":Telescope live_grep <CR>"),
-            button("c", "  Neovim config", "<cmd>e ~/.config/nvim/ | cd %:p:h<cr>"),
+            button("t", "  Find Text", ":Telescope live_grep <CR>"),
+            button("c", "  Neovim Config", "<cmd>e ~/.config/nvim/ | cd %:p:h<cr>"),
             button("l", "󰒲  Lazy", "<cmd>Lazy<cr>"),
             button("q", "󰅚  Quit NVIM", ":qa<CR>"),
         }
