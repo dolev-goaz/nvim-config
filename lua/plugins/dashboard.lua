@@ -1,3 +1,17 @@
+local function reload_lazy()
+    -- close Lazy and re-open when the dashboard is ready
+    if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+            once = true,
+            pattern = "AlphaReady",
+            callback = function()
+                require("lazy").show()
+            end,
+        })
+    end
+end
+
 return {
     "goolord/alpha-nvim",
     priority = 2000,
@@ -83,10 +97,12 @@ return {
             footer = dashboard.section.footer,
         }
 
+        reload_lazy()
+
         local total_content_height = #section.header.val
             + 2 * #section.buttons.val -- buttons have one-line spacing
-            + 2               -- greeting + footer
-            + 4               -- spacing between sections
+            + 2                        -- greeting + footer
+            + 4                        -- spacing between sections
         local total_window_height = vim.fn.winheight(0)
         local vertical_align_padding = math.max(0, math.floor((total_window_height - total_content_height) / 2))
 
@@ -108,6 +124,5 @@ return {
         alpha.setup(opts)
 
         -- TODO: allow opening dashboard with a command
-        -- TODO: reopen this after lazy finishes
     end,
 }
