@@ -110,4 +110,19 @@ function M.get_section_text_height(current_section)
     return #content
 end
 
+function M.toggle_header()
+    local dashboard = require("alpha.themes.dashboard")
+    if dashboard.section.header.val ~= M.headers.ghost then
+        dashboard.section.header.val = M.headers.ghost
+        return
+    end
+
+    local data = require("onefetch").get_onefetch()
+    if data then
+        dashboard.section.header.val = data
+    else
+        vim.notify("onefetch data not found", vim.log.levels.WARN, { title = "Dashboard" })
+    end
+end
+
 return M

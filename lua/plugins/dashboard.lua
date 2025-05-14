@@ -36,6 +36,12 @@ return {
 
         dashboard.section.buttons.val = dashboard_utils.buttons
 
+        local toggle_header
+        local toggle_button = dashboard_utils.button("g", "󰈸  Toggle Git Header", function()
+            toggle_header()
+        end)
+        table.insert(dashboard.section.buttons.val, 7, toggle_button)
+
         dashboard.section.footer.val = dashboard_utils.generate_footer()
         dashboard.section.footer.opts.hl = "DashboardHeader"
 
@@ -91,27 +97,11 @@ return {
             end,
         })
 
-        local group = vim.api.nvim_create_augroup("AlphaOneFetch", { clear = true })
-        vim.api.nvim_create_autocmd("User", {
-            group = group,
-            pattern = "AlphaReady",
-            callback = function()
-                local onefetch = require("onefetch")
-                local onefetch_data = onefetch.get_onefetch()
-                if not onefetch_data then
-                    -- warn
-                    vim.notify("onefetch not found\nInstallation: brew install onefetch", vim.log.levels.WARN, {
-                        title = "Alpha",
-                    })
-                    return
-                end
-                -- require("alpha.themes.dashboard").section.header.val = onefetch_data
-                -- opts.layout[1].val = get_vertical_align_padding()
-                --
-                -- require("alpha").redraw()
-            end,
-        })
-
+        toggle_header = function()
+            dashboard_utils.toggle_header()
+            opts.layout[1].val = get_vertical_align_padding()
+            require("alpha").redraw()
+        end
         -- TODO: allow opening dashboard with a command
     end,
 }
