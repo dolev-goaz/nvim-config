@@ -26,7 +26,7 @@ local function create_text_section(options)
 end
 
 local function get_greeting()
-    local username = vim.fn.system("whoami"):gsub("%s+", "")
+    local username = os.getenv("USER")
     return "Hi " .. username .. ", welcome back to Neovim!"
 end
 
@@ -187,7 +187,7 @@ return {
             pattern = "VeryLazy", -- After lazy finished loading
             callback = function()
                 section.plugins.val = add_border(get_plugin_stats())
-                pcall(vim.cmd.AlphaRedraw) -- 🔄 refresh dashboard
+                require("alpha").redraw()
             end,
         })
 
