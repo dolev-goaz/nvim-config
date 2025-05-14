@@ -158,11 +158,11 @@ return {
         end
         local function get_vertical_align_padding()
             local total_content_height = get_section_text_height(section.header)
-                + 2 * get_section_text_height(section.buttons) -- buttons have one-line spacing
+                + 2 * get_section_text_height(section.buttons)  -- buttons have one-line spacing
                 + get_section_text_height(section.greeting)
-                + 2                                            -- greeting + footer
-                + 4                                            -- spacing between sections
-            local total_window_height = vim.fn.winheight(0)
+                + 2                                             -- greeting + footer
+                + 4                                             -- spacing between sections
+            local total_window_height = vim.fn.winheight(0) - 2 -- lualine and statusline
             return math.floor((total_window_height - total_content_height) / 2)
         end
 
@@ -187,6 +187,27 @@ return {
             pattern = "VeryLazy", -- After lazy finished loading
             callback = function()
                 section.plugins.val = add_border(get_plugin_stats())
+                require("alpha").redraw()
+            end,
+        })
+
+        local group = vim.api.nvim_create_augroup("AlphaOneFetch", { clear = true })
+        vim.api.nvim_create_autocmd("User", {
+            group = group,
+            pattern = "AlphaReady",
+            callback = function()
+                local onefetch = require("onefetch")
+                local onefetch_data = onefetch.get_onefetch()
+                if not onefetch_data then
+                    -- warn
+                    vim.notify("Onefetch not found\nInstallation: brew install onefetch", vim.log.levels.WARN, {
+                        title = "Alpha",
+                    })
+                    return
+                end
+                require("alpha.themes.dashboard").section.header.val = onefetch_data
+                opts.layout[1].val = get_vertical_align_padding()
+
                 require("alpha").redraw()
             end,
         })
