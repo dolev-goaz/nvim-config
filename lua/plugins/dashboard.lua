@@ -12,58 +12,6 @@ local function reload_lazy()
     end
 end
 
-local function create_text_section(options)
-    options = options or {}
-    local section = {
-        type = "text",
-        val = options.content,
-        opts = {
-            position = "center",
-            hl = options.hl,
-        },
-    }
-    return section
-end
-
-local function get_greeting()
-    local username = os.getenv("USER")
-    return "Hi " .. username .. ", welcome back to Neovim!"
-end
-
-local function get_plugin_stats(options)
-    options = options or {}
-    if options.loading then
-        return " Loading plugins..."
-    end
-    local stats = require("lazy").stats()
-    local total_plugins = stats.count
-    local total_loaded = stats.loaded
-    local total_runtime = math.floor(stats.startuptime * 100 + 0.5) / 100
-
-    return string.format(" Loaded %d/%d plugins in %d ms", total_loaded, total_plugins, total_runtime)
-end
-
-local function add_border(content)
-    if type(content) == "function" then
-        content = content()
-    end
-    if type(content) == "string" then
-        content = { content }
-    end
-    local max_content_line_length = 0
-    for _, line in ipairs(content) do
-        local current_width = vim.fn.strdisplaywidth(line)
-        if current_width > max_content_line_length then
-            max_content_line_length = current_width
-        end
-    end
-    local border = string.rep("─", max_content_line_length)
-
-    table.insert(content, 1, border)
-    table.insert(content, border)
-    return content
-end
-
 return {
     "goolord/alpha-nvim",
     priority = 2000,
@@ -81,58 +29,20 @@ return {
     config = function()
         local alpha = require("alpha")
         local dashboard = require("alpha.themes.dashboard")
-        local function button(sc, txt, keybind, keybind_opts)
-            local b = dashboard.button(sc, txt, keybind, keybind_opts)
-            b.opts.hl_shortcut = "MiniIconsPurple"
-            return b
-        end
+        local dashboard_utils = require("utils.dashboard")
 
-        dashboard.section.header.val = {
-            [[                      ██████                     ]],
-            [[                  ████▒▒▒▒▒▒████                 ]],
-            [[                ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██               ]],
-            [[              ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██             ]],
-            [[            ██▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒               ]],
-            [[            ██▒▒▒▒▒▒  ▒▒▓▓▒▒▒▒▒▒  ▓▓▓▓           ]],
-            [[            ██▒▒▒▒▒▒  ▒▒▓▓▒▒▒▒▒▒  ▒▒▓▓           ]],
-            [[          ██▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒    ██         ]],
-            [[          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██         ]],
-            [[          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██         ]],
-            [[          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██         ]],
-            [[          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██         ]],
-            [[          ██▒▒██▒▒▒▒▒▒██▒▒▒▒▒▒▒▒██▒▒▒▒██         ]],
-            [[          ████  ██▒▒██  ██▒▒▒▒██  ██▒▒██         ]],
-            [[          ██      ██      ████      ████         ]],
-            [[                                                 ]],
-        }
+        dashboard.section.header.val = dashboard_utils.headers.ghost
         dashboard.section.header.opts.hl = "DashboardHeader"
 
-        dashboard.section.buttons.val = {
-            button("p", "  Find Project", "<cmd>lua require('telescope').extensions.project.project()<cr>"),
-            button("e", "  New File", ":ene <BAR> startinsert <CR>"),
-            button("f", "  Find Files", ":Telescope find_files <CR>"),
-            button("r", "󰦛  Recent Files", "<cmd>Telescope oldfiles<cr>"),
-            button("t", "  Find Text", ":Telescope live_grep <CR>"),
-            button("c", "  Neovim Config", "<cmd>e ~/.config/nvim/ | cd %:p:h<cr>"),
-            button("l", "󰒲  Lazy", "<cmd>Lazy<cr>"),
-            button("q", "󰅚  Quit NVIM", ":qa<CR>"),
-        }
+        dashboard.section.buttons.val = dashboard_utils.buttons
 
-        local function footer()
-            local footer_datetime = os.date(" %m-%d-%Y   %H:%M")
-            local version = vim.version()
-            local nvim_version_info = "   v" .. version.major .. "." .. version.minor .. "." .. version.patch
-            local value = footer_datetime .. nvim_version_info
-            return value
-        end
-
-        dashboard.section.footer.val = footer()
+        dashboard.section.footer.val = dashboard_utils.generate_footer()
         dashboard.section.footer.opts.hl = "DashboardHeader"
 
-        local greeting_section = create_text_section({ content = get_greeting })
+        local greeting_section = dashboard_utils.create_text_section({ content = dashboard_utils.generate_greeting() })
 
-        local plugin_stats_section = create_text_section({
-            content = add_border(get_plugin_stats({ loading = true })),
+        local plugin_stats_section = dashboard_utils.create_text_section({
+            content = dashboard_utils.add_border_block(dashboard_utils.get_plugin_stats({ loading = true })),
             hl = "DashboardHeader",
         })
 
@@ -146,23 +56,13 @@ return {
 
         reload_lazy()
 
-        local function get_section_text_height(current_section)
-            local content = current_section.val
-            if type(content) == "function" then
-                content = content()
-            end
-            if type(content) == "string" then
-                return 1
-            end
-            return #content
-        end
         local function get_vertical_align_padding()
-            local total_content_height = get_section_text_height(section.header)
-                + 2 * get_section_text_height(section.buttons)  -- buttons have one-line spacing
-                + get_section_text_height(section.greeting)
-                + 2                                             -- greeting + footer
-                + 4                                             -- spacing between sections
-            local total_window_height = vim.fn.winheight(0) - 2 -- lualine and statusline
+            local total_content_height = dashboard_utils.get_section_text_height(section.header)
+                + 2 * dashboard_utils.get_section_text_height(section.buttons) -- buttons have one-line spacing
+                + dashboard_utils.get_section_text_height(section.greeting)
+                + 2                                                            -- greeting + footer
+                + 4                                                            -- spacing between sections
+            local total_window_height = vim.fn.winheight(0) - 2                -- lualine and statusline
             return math.floor((total_window_height - total_content_height) / 2)
         end
 
@@ -186,7 +86,7 @@ return {
         vim.api.nvim_create_autocmd("User", {
             pattern = "VeryLazy", -- After lazy finished loading
             callback = function()
-                section.plugins.val = add_border(get_plugin_stats())
+                section.plugins.val = dashboard_utils.add_border_block(dashboard_utils.get_plugin_stats())
                 require("alpha").redraw()
             end,
         })
@@ -205,10 +105,10 @@ return {
                     })
                     return
                 end
-                require("alpha.themes.dashboard").section.header.val = onefetch_data
-                opts.layout[1].val = get_vertical_align_padding()
-
-                require("alpha").redraw()
+                -- require("alpha.themes.dashboard").section.header.val = onefetch_data
+                -- opts.layout[1].val = get_vertical_align_padding()
+                --
+                -- require("alpha").redraw()
             end,
         })
 
