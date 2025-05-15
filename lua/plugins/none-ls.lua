@@ -11,6 +11,34 @@ local function ensure_installed(package_name, installed_packages_names)
     return false
 end
 
+local null_ls_file_types = {
+    -- file types supported by prettier
+    "typescriptreact",
+    "javascriptreact",
+    "typescript",
+    "javascript",
+    "vue",
+    "json",
+    "css",
+    "scss",
+    "html",
+
+    -- stylua
+    "lua",
+}
+local function format_document()
+    vim.lsp.buf.format({
+        filter = function(client)
+            local ft = vim.bo.filetype
+            local use_null_ls = vim.tbl_contains(null_ls_file_types, ft)
+            if use_null_ls then
+                return client.name == "null-ls"
+            end
+            return true
+        end,
+    })
+end
+
 return {
     "nvimtools/none-ls.nvim",
     dependencies = {
@@ -38,6 +66,11 @@ return {
         end
         null_ls.setup({ sources = sources })
 
-        vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Format current buffer" })
+        -- formatting
+        vim.keymap.set("n", "<leader>cf", format_document, { desc = "Format current buffer" })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = { "*.ts", "*.js", "*.vue", "*.json", "*.css", "*.scss", "*.html", "*.lua" },
+            callback = format_document,
+        })
     end,
 }

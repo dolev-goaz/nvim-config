@@ -57,16 +57,6 @@ return {
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, { desc = "Go To References" })
 
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
-
-            -- save on format
-            -- TODO: add option to enable/disable autoformat
-            local format_augroup = vim.api.nvim_create_augroup("LspFormat", { clear = true })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = format_augroup,
-                callback = function()
-                    vim.lsp.buf.format({ async = false })
-                end,
-            })
         end,
     },
 }
