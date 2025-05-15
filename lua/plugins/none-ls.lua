@@ -57,6 +57,7 @@ return {
         -- -- https://eslint.org/docs/latest/use/migrate-to-9.0.0
         if ensure_installed("eslint_d", installed_packages) then
             table.insert(sources, require("none-ls.diagnostics.eslint_d"))
+            table.insert(sources, require("none-ls.code_actions.eslint_d"))
         end
         if ensure_installed("prettier", installed_packages) then
             table.insert(sources, null_ls.builtins.formatting.prettier)
