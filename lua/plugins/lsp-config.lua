@@ -6,7 +6,12 @@ return {
 		config = function()
 			require("mason").setup({})
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "volar" },
+				ensure_installed = {
+					"lua_ls",
+					"ts_ls",
+					"volar",
+				},
+				automatic_enable = false, -- prevent duplicate lsp setup
 			})
 		end,
 	},
