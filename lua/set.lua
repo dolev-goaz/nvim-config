@@ -56,7 +56,12 @@ vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without resetting buffe
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without resetting buffer" })
 
 -- replace current word in entire file
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set(
+	"n",
+	"<leader>r",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Replace hovered word in entire file" }
+)
 
 ---- clipboard ----
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to system clipboard" })
