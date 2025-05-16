@@ -41,6 +41,23 @@ vim.keymap.set("n", "<A-j>", "<C-w>j", { desc = "Tab down" })
 vim.keymap.set("n", "<A-k>", "<C-w>k", { desc = "Tab up" })
 vim.keymap.set("n", "<A-l>", "<C-w>l", { desc = "Tab right" })
 
+-- scroll while centered
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
+
+-- dragging selected lines
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
+
+-- paste without resetting buffer
+vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without resetting buffer" })
+
+-- delete without resetting buffer
+vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without resetting buffer" })
+
+-- replace current word in entire file
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
 ---- clipboard ----
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y', { desc = "Copy to system clipboard" })
