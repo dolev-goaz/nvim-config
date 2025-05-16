@@ -75,7 +75,12 @@ return {
 		})
 
 		-- Diagnostics
-		vim.keymap.set("n", "<leader>cd", require("telescope.builtin").diagnostics, { desc = "Open Diagnostics" })
-		vim.diagnostic.config({ virtual_text = true })
+		vim.keymap.set(
+			"n",
+			"<leader>cdl",
+			require("telescope.builtin").diagnostics,
+			{ desc = "[C]ode [D]iagnostics [L]ist" }
+		)
+		vim.keymap.set("n", "<leader>cdc", vim.diagnostic.open_float, { desc = "[C]ode [D]iagnostics [C]urrent" })
 	end,
 }
