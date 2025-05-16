@@ -7,6 +7,10 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 
+---- popup windows ----
+vim.o.winborder = "rounded"
+
+---- backup ----
 vim.opt.swapfile = false
 vim.opt.backup = false
 -- vim.opt.undodir = os.getenv("HOME").."/.vim/undodir"
@@ -45,19 +49,19 @@ vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y', { desc = "Copy to system clipbo
 -- vim.opt.keymap = "hebrew"
 vim.opt.termbidi = true -- if terminal supports
 function ToggleHebrewEnglish()
-    vim.cmd("set rightleft!")
-    if vim.bo.keymap == "hebrew" then
-        print("Toggled to english")
-        vim.bo.keymap = ""
-    else
-        print("Toggled to hebrew")
-        vim.bo.keymap = "hebrew"
-    end
+	vim.cmd("set rightleft!")
+	if vim.bo.keymap == "hebrew" then
+		print("Toggled to english")
+		vim.bo.keymap = ""
+	else
+		print("Toggled to hebrew")
+		vim.bo.keymap = "hebrew"
+	end
 end
 
 vim.api.nvim_set_keymap(
-    "n",
-    "<leader>ll",
-    ":lua ToggleHebrewEnglish()<CR>",
-    { noremap = true, silent = true, desc = "Toggle Hebrew/English" }
+	"n",
+	"<leader>ll",
+	":lua ToggleHebrewEnglish()<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Hebrew/English" }
 )
