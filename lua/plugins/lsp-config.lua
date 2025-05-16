@@ -58,7 +58,13 @@ return {
 			lspconfig["volar"].setup({ capabilities = blink_capabilities })
 
 			-- keymaps
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+			local function lsp_hover()
+				vim.lsp.buf.hover({
+					focusable = false,
+					max_width = math.floor(vim.o.columns * 0.8),
+				})
+			end
+			vim.keymap.set("n", "K", lsp_hover, { desc = "Hover" })
 			vim.keymap.set("n", "<leader>gd", telescope.lsp_definitions, { desc = "Go To Definition" })
 			vim.keymap.set("n", "<leader>gD", telescope.lsp_type_definitions, { desc = "Go To Type Definition" })
 			vim.keymap.set("n", "<leader>gi", telescope.lsp_implementations, { desc = "Go To Implementation" })

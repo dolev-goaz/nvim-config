@@ -75,6 +75,14 @@ return {
 		})
 
 		-- Diagnostics
+		vim.diagnostic.config({
+			virtual_text = true,
+			float = {
+				focusable = false,
+				border = "rounded",
+				max_width = 60,
+			},
+		})
 		vim.keymap.set(
 			"n",
 			"<leader>cdl",
