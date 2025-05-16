@@ -60,7 +60,7 @@ return {
 			-- keymaps
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 			vim.keymap.set("n", "<leader>gd", telescope.lsp_definitions, { desc = "Go To Definition" })
-			vim.keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "Go To Declaration" })
+			vim.keymap.set("n", "<leader>gD", telescope.lsp_type_definitions, { desc = "Go To Type Definition" })
 			vim.keymap.set("n", "<leader>gi", telescope.lsp_implementations, { desc = "Go To Implementation" })
 			vim.keymap.set("n", "<leader>gr", telescope.lsp_references, { desc = "Go To References" })
 
