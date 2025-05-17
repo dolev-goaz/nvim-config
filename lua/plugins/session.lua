@@ -2,10 +2,10 @@ return {
 	"rmagatti/auto-session",
 	event = "VeryLazy",
 	keys = {
-		{ "<leader>sf", ":SessionSearch<CR>", desc = "[S]ession [F]ind" },
-		{ "<leader>sd", ":SessionDelete<CR>", desc = "[S]ession [D]elete" },
-		{ "<leader>sr", ":SessionRestore<CR>", desc = "[S]ession [R]estore" },
-		{ "<leader>sc", ":SessionSave ", desc = "[S]ession [C]reate" },
+		{ "<leader>sf", ":SessionSearch<CR>", desc = "[s]ession [f]ind" },
+		{ "<leader>sd", ":SessionDelete<CR>", desc = "[s]ession [d]elete" },
+		{ "<leader>sr", ":SessionRestore<CR>", desc = "[s]ession [r]estore" },
+		{ "<leader>sc", ":SessionSave ", desc = "[s]ession [c]reate" },
 	},
 	---@module "auto-session"
 	---@type AutoSession.Config

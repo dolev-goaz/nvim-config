@@ -68,7 +68,7 @@ return {
 		null_ls.setup({ sources = sources })
 
 		-- Formatting
-		vim.keymap.set("n", "<leader>cf", format_document, { desc = "Format current buffer" })
+		vim.keymap.set("n", "<leader>cf", format_document, { desc = "[c]ode [f]ormat" })
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			pattern = { "*.ts", "*.js", "*.vue", "*.json", "*.css", "*.scss", "*.html", "*.lua" },
 			callback = format_document,
@@ -87,8 +87,8 @@ return {
 			"n",
 			"<leader>cdl",
 			require("telescope.builtin").diagnostics,
-			{ desc = "[C]ode [D]iagnostics [L]ist" }
+			{ desc = "[c]ode [d]iagnostics [l]ist" }
 		)
-		vim.keymap.set("n", "<leader>cdc", vim.diagnostic.open_float, { desc = "[C]ode [D]iagnostics [C]urrent" })
+		vim.keymap.set("n", "<leader>cdc", vim.diagnostic.open_float, { desc = "[c]ode [d]iagnostics [c]urrent" })
 	end,
 }

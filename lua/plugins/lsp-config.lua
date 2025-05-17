@@ -65,12 +65,12 @@ return {
 				})
 			end
 			vim.keymap.set("n", "K", lsp_hover, { desc = "Hover" })
-			vim.keymap.set("n", "<leader>gd", telescope.lsp_definitions, { desc = "Go To Definition" })
-			vim.keymap.set("n", "<leader>gD", telescope.lsp_type_definitions, { desc = "Go To Type Definition" })
-			vim.keymap.set("n", "<leader>gi", telescope.lsp_implementations, { desc = "Go To Implementation" })
-			vim.keymap.set("n", "<leader>gr", telescope.lsp_references, { desc = "Go To References" })
+			vim.keymap.set("n", "<leader>gd", telescope.lsp_definitions, { desc = "[g]o To [d]efinition" })
+			vim.keymap.set("n", "<leader>gD", telescope.lsp_type_definitions, { desc = "[g]o To Type [D]efinition" })
+			vim.keymap.set("n", "<leader>gi", telescope.lsp_implementations, { desc = "[g]o To [i]mplementation" })
+			vim.keymap.set("n", "<leader>gr", telescope.lsp_references, { desc = "[g]o To [r]eferences" })
 
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "[c]ode [a]ctions" })
 		end,
 	},
 }
