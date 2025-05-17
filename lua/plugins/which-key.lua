@@ -26,6 +26,7 @@ return {
 			{ "<leader>g", group = "Go To" },
 			{ "<leader>l", group = "Language" },
 			{ "<leader>c", group = "Code" },
+			{ "<leader>cd", group = "Code Diagnostics" },
 			{ "<leader>s", group = "Session" },
 		})
 	end,
