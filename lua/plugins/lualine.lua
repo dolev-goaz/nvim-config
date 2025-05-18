@@ -128,6 +128,11 @@ return {
 							end
 						end,
 						icon = "",
+						color = function()
+							local res = vim.fn.searchcount()
+							local is_empty = res["total"] == 0
+							return { fg = is_empty and "#d08770" or "#ffffff" }
+						end,
 					},
 					{
 						lazy_status.updates,
