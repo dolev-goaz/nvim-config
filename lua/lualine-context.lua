@@ -35,7 +35,7 @@ local function format_context(context)
 	return table.concat(context, " > ")
 end
 
-function get_treesitter_context()
+function M.get_treesitter_context()
 	local node = ts_utils.get_node_at_cursor()
 	if not node then
 		return "empty"

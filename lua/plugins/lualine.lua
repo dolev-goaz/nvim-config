@@ -70,6 +70,12 @@ return {
 						},
 						separator = "",
 					},
+					{
+						function()
+							return require("lualine-context").get_treesitter_context()
+						end,
+						icon = "󰅩",
+					},
 				},
 				lualine_x = {
 					{
