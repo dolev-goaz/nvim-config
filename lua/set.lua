@@ -27,6 +27,11 @@ vim.opt.updatetime = 750
 
 vim.opt.colorcolumn = "100"
 
+---- Code Execution ----
+vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>", { desc = "Execute current file" })
+vim.keymap.set("n", "<space>x", ":.lua<CR>", { desc = "Execute current line" })
+vim.keymap.set("v", "<space>x", ":lua<CR>", { desc = "Execute selected lines" })
+
 ---- terminal ----
 -- exit terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-N>", { desc = "Exit terminal mode" })
@@ -66,6 +71,15 @@ vim.keymap.set(
 ---- clipboard ----
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y', { desc = "Copy to system clipboard" })
+
+-- highlight when yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
 
 ---- language ----
 -- vim.opt.keymap = "hebrew"
