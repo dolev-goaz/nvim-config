@@ -27,6 +27,8 @@ vim.opt.updatetime = 750
 
 vim.opt.colorcolumn = "100"
 
+vim.opt.cmdheight = 0 -- references https://www.reddit.com/r/neovim/comments/12lf0ke/does_anyone_have_a_cmdheight0_setup_without/
+
 ---- Code Execution ----
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>", { desc = "Execute current file" })
 vim.keymap.set("n", "<space>x", ":.lua<CR>", { desc = "Execute current line" })
