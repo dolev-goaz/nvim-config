@@ -102,6 +102,34 @@ return {
 						color = { fg = "#ff007c" },
 					},
 					{
+
+						function()
+							local res = vim.fn.searchcount()
+							if not res then
+								return ""
+							end
+							local search_string = vim.fn.getreg("/")
+							local base_format = search_string -- string.format('searching "%s"', search_string)
+							if res["incomplete"] == 0 then
+								return string.format("%s [%d/%d]", base_format, res["current"], res["total"])
+							end
+							if res["incomplete"] == 1 then
+								return string.format(" [?/??]", base_format)
+							end
+							-- incomplete = 2, timeout
+							-- if both current and total exceed maxcount
+							if res["total"] > res["maxcount"] and res["current"] > res["maxcount"] then
+								return string.format("%s [>%d/>%d]", base_format, res["current"], res["total"])
+							else
+								-- if only total exceeds maxcount
+								if res["total"] > res["maxcount"] then
+									return string.format("%s [%d/>%d]", base_format, res["current"], res["total"])
+								end
+							end
+						end,
+						icon = "",
+					},
+					{
 						lazy_status.updates,
 						cond = lazy_status.has_updates,
 						fmt = trunc(0, 0, 160, true),
