@@ -96,8 +96,11 @@ return {
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "VeryLazy", -- After lazy finished loading
 			callback = function()
-				section.plugins.val = dashboard_utils.add_border_block(dashboard_utils.get_plugin_stats())
-				require("alpha").redraw()
+				-- NOTE schedule is a temporary solution, we check if it resolves the error on first load.
+				vim.schedule(function()
+					section.plugins.val = dashboard_utils.add_border_block(dashboard_utils.get_plugin_stats())
+					require("alpha").redraw()
+				end)
 			end,
 		})
 
