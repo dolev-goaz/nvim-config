@@ -23,6 +23,18 @@ local function is_node_type_interesting(type)
 		or type == "if_statement"
 end
 
+local function format_context(context)
+	context = reverse_table(context)
+	if #context >= 3 then
+		return table.concat({
+			context[1],
+			" ... ",
+			context[#context],
+		}, " > ")
+	end
+	return table.concat(context, " > ")
+end
+
 function get_treesitter_context()
 	local node = ts_utils.get_node_at_cursor()
 	if not node then
@@ -49,7 +61,7 @@ function get_treesitter_context()
 		end
 		node = node:parent()
 	end
-	return table.concat(reverse_table(context), " > ")
+	return format_context(context)
 end
 
 return M
