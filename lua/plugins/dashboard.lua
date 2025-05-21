@@ -73,7 +73,7 @@ return {
 				+ 2 -- greeting + footer
 				+ 4 -- spacing between sections
 			local total_window_height = vim.fn.winheight(0) - 2 -- lualine and statusline
-			return math.floor((total_window_height - total_content_height) / 2)
+			return math.max(0, math.floor((total_window_height - total_content_height) / 2))
 		end
 
 		local opts = {
