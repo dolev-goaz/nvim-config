@@ -50,5 +50,15 @@ return {
 				},
 			},
 		})
+		-- Custom print message
+		_G.print = function(...)
+			local args = { ... }
+			local msg = {}
+			for i = 1, #args do
+				msg[#msg + 1] = vim.inspect(args[i])
+			end
+			local message = table.concat(msg, " ")
+			vim.notify(message, vim.log.levels.INFO, { title = "Print" })
+		end
 	end,
 }
