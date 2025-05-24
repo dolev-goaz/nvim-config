@@ -26,8 +26,7 @@ return {
 	config = function()
 		require("noice").setup({
 			views = {
-				split = {
-					enter = true,
+				popup = {
 					scrollbar = false,
 				},
 			},
