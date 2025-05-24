@@ -48,6 +48,18 @@ return {
 					},
 					view = "popup",
 				},
+				{
+					filter = {
+						event = "msg_show",
+						find = "^fatal:",
+					},
+					-- --- @type NoiceNotifyOptions -- remove first two -- for autocomplete
+					opts = {
+						level = vim.log.levels.ERROR,
+						title = "Git Error",
+					},
+					view = "notify",
+				},
 			},
 		})
 		-- Custom print message
