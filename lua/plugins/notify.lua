@@ -47,7 +47,7 @@ return {
 							{ find = "On branch" },
 						},
 					},
-					view = "split",
+					view = "popup",
 				},
 			},
 		})
