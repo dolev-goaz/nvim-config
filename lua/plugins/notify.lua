@@ -25,6 +25,11 @@ return {
 	},
 	config = function()
 		require("noice").setup({
+			cmdline = {
+				format = {
+					calculator = false,
+				},
+			},
 			views = {
 				popup = {
 					scrollbar = false,
