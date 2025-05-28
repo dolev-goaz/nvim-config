@@ -65,6 +65,15 @@ return {
 					},
 					view = "notify",
 				},
+				{
+					filter = {
+						any = {
+							{ find = "Toggling hidden files" },
+							{ find = "^Restored session:" },
+						},
+					},
+					view = "mini",
+				},
 			},
 		})
 		-- Custom print message
