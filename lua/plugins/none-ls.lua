@@ -43,22 +43,35 @@ return {
 	"nvimtools/none-ls.nvim",
 	dependencies = {
 		"nvimtools/none-ls-extras.nvim",
+		{
+			"esmuellert/nvim-eslint",
+			config = function()
+				require("nvim-eslint").setup({
+					settings = {
+						workingDirectory = function(bufnr)
+							return { directory = vim.fs.root(bufnr, { "package.json" }) }
+						end,
+					},
+				})
+			end,
+		},
 	},
 	config = function()
 		local null_ls = require("null-ls")
 		local installed_packages = require("mason-registry").get_installed_package_names()
 		local sources = {}
 
+		-- NOTE_2: i now use nvim-eslint instead because it just works lol
 		-- NOTE: only install eslint_d version 13.1.2. In higher versions, it requires files
 		-- with the format eslint.config.js.
 		-- Install command: :MasonInstall eslint_d@13.1.2
 		-- Sources:
 		-- -- https://www.reddit.com/r/neovim/comments/1fdpap9/eslint_error_could_not_parse_linter_output_due_to/
 		-- -- https://eslint.org/docs/latest/use/migrate-to-9.0.0
-		if ensure_installed("eslint_d", installed_packages) then
-			table.insert(sources, require("none-ls.diagnostics.eslint_d"))
-			table.insert(sources, require("none-ls.code_actions.eslint_d"))
-		end
+		-- if ensure_installed("eslint_d", installed_packages) then
+		-- 	table.insert(sources, require("none-ls.diagnostics.eslint_d"))
+		-- 	table.insert(sources, require("none-ls.code_actions.eslint_d"))
+		-- end
 		if ensure_installed("prettier", installed_packages) then
 			table.insert(sources, null_ls.builtins.formatting.prettier)
 		end
