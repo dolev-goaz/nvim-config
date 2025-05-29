@@ -13,6 +13,10 @@ vim.opt.backup = false
 -- vim.opt.undodir = os.getenv("HOME").."/.vim/undodir"
 -- vim.opt.undofile = true
 
+---- highlight current line ----
+vim.opt.cursorline = true
+vim.cmd([[highlight CursorLine guibg=#222233]])
+
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
 
