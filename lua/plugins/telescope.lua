@@ -13,16 +13,17 @@ return {
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.8",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Telescope: Search Git files" })
-			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[f]ind [f]iles" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[f]ind [g]rep Search" })
-			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[f]ind [h]elp" })
-		end,
+		event = "VeryLazy",
+		keys = {
+			{ "<C-p>", "<cmd>Telescope git_files<cr>", desc = "Telescope: Search Git files" },
+			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "[f]ind [f]iles" },
+			{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "[f]ind [g]rep Search" },
+			{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "[f]ind [h]elp" },
+		},
 	},
 	{
 		"nvim-telescope/telescope-ui-select.nvim",
+		event = "VeryLazy",
 		config = function()
 			require("telescope").setup({
 				extensions = {
@@ -32,6 +33,13 @@ return {
 				},
 			})
 			require("telescope").load_extension("ui-select")
+		end,
+	},
+	{
+		"nvim-telescope/telescope-project.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("telescope").load_extension("project")
 		end,
 	},
 }

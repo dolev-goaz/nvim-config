@@ -41,6 +41,7 @@ end
 
 return {
 	"nvimtools/none-ls.nvim",
+	event = "VeryLazy",
 	dependencies = {
 		"nvimtools/none-ls-extras.nvim",
 		{

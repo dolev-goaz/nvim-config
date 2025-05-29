@@ -35,6 +35,7 @@ return {
 		-- Setup with :Copilot setup
 		-- Get status with :Copilot status
 		"github/copilot.vim",
+		event = "InsertEnter",
 	},
 	{
 		-- automatically pair ", (, etc

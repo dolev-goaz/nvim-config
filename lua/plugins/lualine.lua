@@ -18,6 +18,7 @@ end
 
 return {
 	"nvim-lualine/lualine.nvim",
+	event = "VeryLazy",
 	enabled = vim.o.laststatus ~= 0,
 	dependencies = {
 		{
