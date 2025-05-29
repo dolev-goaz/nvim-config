@@ -62,6 +62,7 @@ return {
 				vim.lsp.buf.hover({
 					focusable = false,
 					max_width = math.floor(vim.o.columns * 0.8),
+					border = "rounded",
 				})
 			end
 			vim.keymap.set("n", "K", lsp_hover, { desc = "Hover" })
