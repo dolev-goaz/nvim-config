@@ -72,10 +72,9 @@ return {
 						separator = "",
 					},
 					{
-						function()
-							return require("lualine-context").get_treesitter_context()
-						end,
-						icon = "󰅩",
+						"navic",
+						color_correction = nil,
+						navic_opts = nil,
 					},
 				},
 				lualine_x = {

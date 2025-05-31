@@ -32,16 +32,18 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 			local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
+			local on_attach = require("nvim-navic").attach
 			local telescope = require("telescope.builtin")
 
 			-- lua lsp
-			lspconfig["lua_ls"].setup({ capabilities = blink_capabilities })
+			lspconfig["lua_ls"].setup({ capabilities = blink_capabilities, on_attach = on_attach })
 
 			-- typescript lsp
 			local vue_language_server_path = vim.fn.stdpath("data")
 				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 			lspconfig["ts_ls"].setup({
 				capabilities = blink_capabilities,
+				on_attach = on_attach,
 				init_options = {
 					plugins = {
 						{
@@ -55,7 +57,7 @@ return {
 			})
 
 			-- vue lsp
-			lspconfig["volar"].setup({ capabilities = blink_capabilities })
+			lspconfig["volar"].setup({ capabilities = blink_capabilities, on_attach = on_attach })
 
 			-- keymaps
 			local function lsp_hover()
