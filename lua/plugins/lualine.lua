@@ -46,6 +46,27 @@ return {
 				disabled_filetypes = { "alpha", "neo-tree" },
 				globalstatus = true,
 			},
+			winbar = {
+				lualine_a = {
+					{
+						"pretty_path",
+						directories = {
+							max_depth = 4,
+						},
+						highlights = {
+							newfile = "LazyProgressDone",
+						},
+						separator = "",
+					},
+				},
+				lualine_b = {
+					{
+						"navic",
+						color_correction = nil,
+						navic_opts = nil,
+					},
+				},
+			},
 			sections = {
 				lualine_a = {
 					{
@@ -60,23 +81,7 @@ return {
 						fmt = trunc(70, 15, 65, true),
 					},
 				},
-				lualine_c = {
-					{
-						"pretty_path",
-						directories = {
-							max_depth = 4,
-						},
-						highlights = {
-							newfile = "LazyProgressDone",
-						},
-						separator = "",
-					},
-					{
-						"navic",
-						color_correction = nil,
-						navic_opts = nil,
-					},
-				},
+				lualine_c = {},
 				lualine_x = {
 					{
 						"diagnostics",
@@ -166,10 +171,25 @@ return {
 					},
 				},
 			},
-			inactive_sections = {
-				lualine_c = {
+			inactive_sections = {},
+			inactive_winbar = {
+				lualine_a = {
 					{
 						"pretty_path",
+						directories = {
+							max_depth = 4,
+						},
+						highlights = {
+							newfile = "LazyProgressDone",
+						},
+						separator = { left = "", right = "" },
+					},
+				},
+				lualine_b = {
+					{
+						"navic",
+						color_correction = nil,
+						navic_opts = nil,
 					},
 				},
 			},
