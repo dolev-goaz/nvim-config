@@ -14,6 +14,20 @@ return {
 		tag = "0.1.8",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		event = "VeryLazy",
+		opts = {
+			pickers = {
+				live_grep = {
+					file_ignore_patterns = {
+						"node_modules",
+						".git/",
+						"dist",
+					},
+					additional_args = function()
+						return { "--hidden" }
+					end,
+				},
+			},
+		},
 		keys = {
 			{ "<C-p>", "<cmd>Telescope git_files<cr>", desc = "Telescope: Search Git files" },
 			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "[f]ind [f]iles" },
