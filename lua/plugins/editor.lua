@@ -20,10 +20,9 @@ return {
 		event = "BufReadPre",
 		config = function()
 			require("colorizer").setup({
-				filetypes = { "*" },
+				filetypes = { "vue", "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact" },
 				user_default_options = {
 					css = true,
-					-- Virtualtext character to use
 					mode = "virtualtext",
 					virtualtext_inline = "before",
 				},
