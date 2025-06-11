@@ -9,7 +9,7 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"ts_ls",
-					"volar",
+					"vue_ls",
 				},
 				automatic_enable = false, -- prevent duplicate lsp setup
 			})
@@ -38,7 +38,7 @@ return {
 			-- lua lsp
 			lspconfig["lua_ls"].setup({ capabilities = blink_capabilities, on_attach = on_attach })
 
-			-- typescript lsp
+			-- typescript+vue lsp
 			local vue_language_server_path = vim.fn.stdpath("data")
 				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 			lspconfig["ts_ls"].setup({
