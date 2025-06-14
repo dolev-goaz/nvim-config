@@ -26,7 +26,7 @@ return {
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 			},
-			fuzzy = { implementation = "prefer_rust_with_warning" },
+			fuzzy = { implementation = "lua" },
 			-- NOTE: maybe check nvim-cmp for cmdline completion
 		},
 		opts_extend = { "sources.default" },
