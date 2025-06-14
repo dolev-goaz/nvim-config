@@ -36,7 +36,12 @@ return {
 			local telescope = require("telescope.builtin")
 
 			-- lua lsp
-			lspconfig["lua_ls"].setup({ capabilities = blink_capabilities, on_attach = on_attach })
+			local lua_language_server_path = vim.fn.stdpath("data") .. "/mason/bin/lua-language-server"
+			lspconfig["lua_ls"].setup({
+				cmd = { lua_language_server_path },
+				capabilities = blink_capabilities,
+				on_attach = on_attach,
+			})
 
 			-- typescript+vue lsp
 			local vue_language_server_path = vim.fn.stdpath("data")
