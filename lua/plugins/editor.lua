@@ -1,3 +1,8 @@
+vim.filetype.add({
+	pattern = {
+		[".env%..+"] = "sh",
+	},
+})
 return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
